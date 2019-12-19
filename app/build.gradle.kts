@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
 }
 
 android {
@@ -49,6 +50,9 @@ dependencies {
     implementation("com.google.android.material:material:1.2.0-alpha02")
     implementation("androidx.fragment:fragment:$fragmentVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
+    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("com.google.dagger:dagger:2.25.3")
+    kapt("com.google.dagger:dagger-compiler:2.25.3")
     //tests
     testImplementation("junit:junit:4.12")
     //android tests
