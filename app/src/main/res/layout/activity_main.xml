@@ -12,6 +12,8 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <com.google.android.material.tabs.TabLayout
+            app:tabSelectedTextColor="@color/md_white_1000"
+            app:tabTextColor="@color/md_grey_500"
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
