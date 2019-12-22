@@ -67,11 +67,12 @@ dependencies {
     compileOnly("com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2")
     implementation("androidx.lifecycle:lifecycle-livedata:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.github.coroutineDispatcher:Rocket:1.3.1")
     //processors
     kapt("com.google.dagger:dagger-compiler:2.25.3")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
     kapt("com.squareup.inject:assisted-inject-processor-dagger2:0.5.2")
-
     //tests
     testImplementation("junit:junit:4.12")
     //android tests

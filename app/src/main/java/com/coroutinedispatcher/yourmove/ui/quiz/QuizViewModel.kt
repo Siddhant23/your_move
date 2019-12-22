@@ -19,6 +19,10 @@ class QuizViewModel @AssistedInject constructor(
     private val yuGiOhApi: YuGiOhApi,
     @Assisted val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private var cardName: String = ""
+    private var userCorrectAnswer: Int = 0
+    private var userWrongAnswer: Int = 0
+    private var userSkippedAnswer: Int = 0
 
     private val cardRequestExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
@@ -28,6 +32,10 @@ class QuizViewModel @AssistedInject constructor(
 
     val imageGeneratedUrl: LiveData<String> = savedStateHandle.getLiveData(QUIZ_IMAGE_STATE)
     val buttonState: LiveData<String> = savedStateHandle.getLiveData(BUTTON_SAVED_STATE)
+    val userCorrectAnswerLiveData: LiveData<Int> =
+        savedStateHandle.getLiveData(USER_CORRECT_ANSWER_STATE)
+    val userWrongAnswerLiveData: LiveData<Int> =
+        savedStateHandle.getLiveData(USER_WRONG_ANSWER_STATE)
 
     @AssistedInject.Factory
     interface Factory {
@@ -35,10 +43,13 @@ class QuizViewModel @AssistedInject constructor(
     }
 
     init {
+        savedStateHandle.set(USER_CORRECT_ANSWER_STATE, userCorrectAnswer)
+        savedStateHandle.set(USER_WRONG_ANSWER_STATE, userWrongAnswer)
+        savedStateHandle.set(USER_SKIPED_ANSWER_STATE, userSkippedAnswer)
         launchRandomImageApiCall()
     }
 
-    fun launchRandomImageApiCall() {
+    private fun launchRandomImageApiCall() {
         viewModelScope.launch(appCoroutineDispatchers.mainDispatcher + cardRequestExceptionHandler) {
             savedStateHandle.set(BUTTON_SAVED_STATE, BUTTON_STATE_WAIT)
             withContext(appCoroutineDispatchers.ioDispatcher) {
@@ -58,6 +69,7 @@ class QuizViewModel @AssistedInject constructor(
         body?.let {
             val randomCardId = it[0].id
             val newUrl = "$JUST_IMAGE_URL$randomCardId.jpg"
+            cardName = it[0].name
             withContext(appCoroutineDispatchers.mainDispatcher) {
                 savedStateHandle.set(QUIZ_IMAGE_STATE, newUrl)
             }
@@ -70,5 +82,14 @@ class QuizViewModel @AssistedInject constructor(
 
     fun makeSuccessButton() {
         savedStateHandle.set(BUTTON_SAVED_STATE, BUTTON_STATE_SUCESS)
+    }
+
+    fun checkAnswerAndRelaunchCall(answer: String) {
+        if (answer.equals(cardName, true)) {
+            savedStateHandle.set(USER_CORRECT_ANSWER_STATE, ++userCorrectAnswer)
+        } else {
+            savedStateHandle.set(USER_WRONG_ANSWER_STATE, ++userWrongAnswer)
+        }
+        launchRandomImageApiCall()
     }
 }

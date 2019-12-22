@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.coroutinedispatcher.yourmove.R
@@ -14,6 +15,7 @@ import com.coroutinedispatcher.yourmove.utils.BUTTON_STATE_SUCESS
 import com.coroutinedispatcher.yourmove.utils.BUTTON_STATE_WAIT
 import com.coroutinedispatcher.yourmove.utils.savedStateViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -28,6 +30,7 @@ class QuizFragment : Fragment() {
 
     private var submitButton: MaterialButton? = null
     private var yuGiOhImage: ImageView? = null
+    private var usersAnswerTextInputEditText: TextInputEditText? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +48,7 @@ class QuizFragment : Fragment() {
     private fun initializeComponents(view: View) {
         yuGiOhImage = view.findViewById(R.id.iv_yugioh_card)
         submitButton = view.findViewById(R.id.btn_submit)
+        usersAnswerTextInputEditText = view.findViewById(R.id.tiet_answer)
         picasso.load(R.drawable.yugioh_placeholder).fit().centerCrop().into(yuGiOhImage)
     }
 
@@ -77,13 +81,22 @@ class QuizFragment : Fragment() {
         })
 
         submitButton?.setOnClickListener {
-            quizViewModel.launchRandomImageApiCall()
+            if (usersAnswerTextInputEditText?.text.toString().isNotEmpty()) {
+                quizViewModel.checkAnswerAndRelaunchCall(usersAnswerTextInputEditText?.text.toString())
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    R.string.please_place_an_answer_to_submit,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
     override fun onDestroyView() {
         yuGiOhImage = null
         submitButton = null
+        usersAnswerTextInputEditText = null
         super.onDestroyView()
     }
 }

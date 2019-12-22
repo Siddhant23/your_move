@@ -9,4 +9,7 @@
     <string name="right_answer_score">Right answers:</string>
     <string name="wrong_score">Wrong answer</string>
     <string name="answer_here">Your answer</string>
+    <string name="please_place_an_answer_to_submit">Please place an answer to submit</string>
+    <string name="total_user_points">All time score</string>
+    <string name="skip">Skip</string>
 </resources>
