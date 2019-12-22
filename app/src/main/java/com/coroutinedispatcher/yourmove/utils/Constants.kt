@@ -12,3 +12,8 @@ const val QUIZ_IMAGE_STATE = "quiz_image_state"
 const val USER_CORRECT_ANSWER_STATE = "user_correct_answers_state"
 const val USER_WRONG_ANSWER_STATE = "user_wrong_answer_state"
 const val USER_SKIPED_ANSWER_STATE = "user_wrong_answer_state"
+const val USER_TOTAL_SCORE_STATE = "user_total_Score_state"
+
+//Rocket
+const val SHARED_PREFERENCES_TAG = "your_move_shared_preferences_tag"
+const val USER_TOTAL_SCORE_KEY = "user_total_score_key"

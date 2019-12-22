@@ -10,6 +10,7 @@ import com.coroutinedispatcher.yourmove.model.Card
 import com.coroutinedispatcher.yourmove.utils.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.stavro_xhardha.rocket.Rocket
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,6 +18,7 @@ import kotlinx.coroutines.withContext
 class QuizViewModel @AssistedInject constructor(
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
     private val yuGiOhApi: YuGiOhApi,
+    private val rocket: Rocket,
     @Assisted val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private var cardName: String = ""
@@ -36,6 +38,7 @@ class QuizViewModel @AssistedInject constructor(
         savedStateHandle.getLiveData(USER_CORRECT_ANSWER_STATE)
     val userWrongAnswerLiveData: LiveData<Int> =
         savedStateHandle.getLiveData(USER_WRONG_ANSWER_STATE)
+    val userTotalScoreLiveData: LiveData<Int> = savedStateHandle.getLiveData(USER_TOTAL_SCORE_STATE)
 
     @AssistedInject.Factory
     interface Factory {
@@ -87,9 +90,21 @@ class QuizViewModel @AssistedInject constructor(
     fun checkAnswerAndRelaunchCall(answer: String) {
         if (answer.equals(cardName, true)) {
             savedStateHandle.set(USER_CORRECT_ANSWER_STATE, ++userCorrectAnswer)
+            writeUserTotalScore()
         } else {
             savedStateHandle.set(USER_WRONG_ANSWER_STATE, ++userWrongAnswer)
         }
         launchRandomImageApiCall()
+    }
+
+    private fun writeUserTotalScore() {
+        viewModelScope.launch(appCoroutineDispatchers.ioDispatcher) {
+            val userCurrentTotalScore = rocket.readInt(USER_TOTAL_SCORE_KEY)
+            rocket.writeInt(USER_TOTAL_SCORE_KEY, userCurrentTotalScore + userCorrectAnswer)
+            val newUserTotalScore = rocket.readInt(USER_TOTAL_SCORE_KEY)
+            withContext(appCoroutineDispatchers.mainDispatcher) {
+                savedStateHandle.set(USER_TOTAL_SCORE_STATE, newUserTotalScore)
+            }
+        }
     }
 }
