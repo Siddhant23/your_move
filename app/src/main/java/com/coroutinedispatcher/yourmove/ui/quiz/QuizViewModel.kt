@@ -98,13 +98,9 @@ class QuizViewModel @AssistedInject constructor(
     }
 
     private fun writeUserTotalScore() {
-        viewModelScope.launch(appCoroutineDispatchers.ioDispatcher) {
-            val userCurrentTotalScore = rocket.readInt(USER_TOTAL_SCORE_KEY)
-            rocket.writeInt(USER_TOTAL_SCORE_KEY, userCurrentTotalScore + userCorrectAnswer)
-            val newUserTotalScore = rocket.readInt(USER_TOTAL_SCORE_KEY)
-            withContext(appCoroutineDispatchers.mainDispatcher) {
-                savedStateHandle.set(USER_TOTAL_SCORE_STATE, newUserTotalScore)
-            }
-        }
+        val userCurrentTotalScore = rocket.readInt(USER_TOTAL_SCORE_KEY)
+        rocket.writeInt(USER_TOTAL_SCORE_KEY, userCurrentTotalScore + userCorrectAnswer)
+        val newUserTotalScore = rocket.readInt(USER_TOTAL_SCORE_KEY)
+        savedStateHandle.set(USER_TOTAL_SCORE_STATE, newUserTotalScore)
     }
 }
