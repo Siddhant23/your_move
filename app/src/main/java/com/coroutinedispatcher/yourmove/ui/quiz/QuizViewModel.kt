@@ -47,7 +47,7 @@ class QuizViewModel @AssistedInject constructor(
         fun create(savedStateHandle: SavedStateHandle): QuizViewModel
     }
 
-    init {
+    fun startQuiz() {
         savedStateHandle.set(USER_CORRECT_ANSWER_STATE, userCorrectAnswer)
         savedStateHandle.set(USER_WRONG_ANSWER_STATE, userWrongAnswer)
         savedStateHandle.set(USER_SKIPED_ANSWER_STATE, userSkippedAnswer)

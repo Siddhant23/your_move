@@ -41,6 +41,7 @@ class QuizFragment : Fragment() {
     private var userTotalScoreTextView: TextView? = null
     private var skipButton: MaterialButton? = null
     private var dialog: AlertDialog? = null
+    private var mustShowDialog = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -130,7 +131,10 @@ class QuizFragment : Fragment() {
     }
 
     private fun showInfoDialog() {
-        dialog = MaterialAlertDialogBuilder(requireActivity())
+        dialog = MaterialAlertDialogBuilder(
+            requireActivity(),
+            R.style.NotificationDialogTheme
+        )
             .setTitle(R.string.app_name)
             .setMessage(R.string.come_tomorrow)
             .setCancelable(false)
@@ -140,7 +144,17 @@ class QuizFragment : Fragment() {
             }
             .show()
     }
-    
+
+    override fun onResume() {
+        super.onResume()
+        dialog?.let {
+            if (it.isShowing) {
+                it.dismiss()
+            }
+        }
+        quizViewModel.startQuiz()
+    }
+
     override fun onDestroyView() {
         yuGiOhImage = null
         submitButton = null
