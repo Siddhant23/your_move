@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import com.coroutinedispatcher.yourmove.di.DaggerYourMoveApplicationComponent
 import com.coroutinedispatcher.yourmove.di.YourMoveApplicationComponent
+import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
 
 class YourMoveApplication : Application() {
@@ -15,6 +16,7 @@ class YourMoveApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+        JodaTimeAndroid.init(this)
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
         yourMoveApplicationComponent = DaggerYourMoveApplicationComponent.factory().create(this)
         APPLICATION_COMPONENT = yourMoveApplicationComponent

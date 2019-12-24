@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.coroutinedispatcher.yourmove.ui.quiz.QuizFragment
@@ -14,6 +16,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
+    private val sharedViewModel: SharedViewModel by lazy {
+        ViewModelProviders.of(this).get(SharedViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +33,12 @@ class MainActivity : AppCompatActivity() {
                 1 -> tab.text = "Quiz"
             }
         }.attach()
+
+        sharedViewModel.slideBackEvent.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {
+                onBackPressed()
+            }
+        })
     }
 
     override fun onBackPressed() {

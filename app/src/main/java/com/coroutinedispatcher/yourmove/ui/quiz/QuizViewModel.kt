@@ -14,12 +14,14 @@ import com.stavro_xhardha.rocket.Rocket
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.joda.time.DateTime
+import org.joda.time.Days
 
 class QuizViewModel @AssistedInject constructor(
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
     private val yuGiOhApi: YuGiOhApi,
     private val rocket: Rocket,
-    @Assisted val savedStateHandle: SavedStateHandle
+    @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private var cardName: String = ""
     private var userCorrectAnswer: Int = 0
@@ -49,7 +51,20 @@ class QuizViewModel @AssistedInject constructor(
         savedStateHandle.set(USER_CORRECT_ANSWER_STATE, userCorrectAnswer)
         savedStateHandle.set(USER_WRONG_ANSWER_STATE, userWrongAnswer)
         savedStateHandle.set(USER_SKIPED_ANSWER_STATE, userSkippedAnswer)
-        launchRandomImageApiCall()
+        val userTotalPoints = rocket.readInt(USER_TOTAL_SCORE_KEY)
+        savedStateHandle.set(USER_TOTAL_SCORE_STATE, userTotalPoints)
+        checkIfHoursHavePassed()
+    }
+
+    private fun checkIfHoursHavePassed() {
+        val savedTime = rocket.readLong(USER_QUIZ_PREVENTION_TIME_KEY)
+        val savedTimeInDateTime = DateTime(savedTime)
+        val currentTime = DateTime()
+        if (Days.daysBetween(savedTimeInDateTime, currentTime) <= Days.ONE) {
+            savedStateHandle.set(USER_WRONG_ANSWER_STATE, WRONG_ANSWER_LIMIT)
+        } else {
+            launchRandomImageApiCall()
+        }
     }
 
     private fun launchRandomImageApiCall() {
@@ -89,12 +104,18 @@ class QuizViewModel @AssistedInject constructor(
 
     fun checkAnswerAndRelaunchCall(answer: String) {
         if (answer.equals(cardName, true)) {
-            savedStateHandle.set(USER_CORRECT_ANSWER_STATE, ++userCorrectAnswer)
+            userCorrectAnswer++
+            savedStateHandle.set(USER_CORRECT_ANSWER_STATE, userCorrectAnswer)
             writeUserTotalScore()
         } else {
-            savedStateHandle.set(USER_WRONG_ANSWER_STATE, ++userWrongAnswer)
+            userWrongAnswer++
+            savedStateHandle.set(USER_WRONG_ANSWER_STATE, userWrongAnswer)
         }
-        launchRandomImageApiCall()
+        if (userWrongAnswer < WRONG_ANSWER_LIMIT) {
+            launchRandomImageApiCall()
+        } else {
+            savedStateHandle.set(BUTTON_SAVED_STATE, BUTTON_ALL_DONE_FOR_TODAY_STATE)
+        }
     }
 
     private fun writeUserTotalScore() {
@@ -102,5 +123,10 @@ class QuizViewModel @AssistedInject constructor(
         rocket.writeInt(USER_TOTAL_SCORE_KEY, userCurrentTotalScore + userCorrectAnswer)
         val newUserTotalScore = rocket.readInt(USER_TOTAL_SCORE_KEY)
         savedStateHandle.set(USER_TOTAL_SCORE_STATE, newUserTotalScore)
+    }
+
+    fun forceUserToComeBackTomorrow() {
+        val currentTime = DateTime().millis
+        rocket.writeLong(USER_QUIZ_PREVENTION_TIME_KEY, currentTime)
     }
 }

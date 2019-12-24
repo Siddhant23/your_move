@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("com.jakewharton.timber:timber:4.7.1")
     implementation("com.github.coroutineDispatcher:Rocket:2.0.0-alpha")
+    implementation("net.danlew:android.joda:2.10.2")
     //processors
     kapt("com.google.dagger:dagger-compiler:2.25.3")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")

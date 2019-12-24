@@ -7,9 +7,11 @@
     <string name="find_the_card_name">Find the card name</string>
     <string name="submit">Submit</string>
     <string name="right_answer_score">Right answers:</string>
-    <string name="wrong_score">Wrong answer</string>
+    <string name="wrong_score">Wrong answers:</string>
     <string name="answer_here">Your answer</string>
     <string name="please_place_an_answer_to_submit">Please place an answer to submit</string>
-    <string name="total_user_points">All time score</string>
+    <string name="total_user_points">All time score:</string>
     <string name="skip">Skip</string>
+    <string name="come_tomorrow">You have exeeded the wrong answer limit for today, please come back tomorrow</string>
+    <string name="ok">Ok</string>
 </resources>
