@@ -54,8 +54,6 @@ class QuizViewModel @AssistedInject constructor(
         savedStateHandle.set(USER_CORRECT_ANSWER_STATE, userCorrectAnswer)
         savedStateHandle.set(USER_SKIPED_ANSWER_STATE, userSkippedAnswer)
         val userTotalPoints = rocket.readInt(USER_TOTAL_SCORE_KEY)
-        val currentTime = DateTime().millis
-        rocket.writeLong(USER_QUIZ_PREVENTION_TIME_KEY, currentTime)
         savedStateHandle.set(USER_TOTAL_SCORE_STATE, userTotalPoints)
         checkIfHoursHavePassed()
     }
@@ -65,21 +63,26 @@ class QuizViewModel @AssistedInject constructor(
         val savedTimeInDateTime = DateTime(savedTime)
         val currentTime = DateTime()
         userWrongAnswer = rocket.readInt(USER_WRONG_ANSWER_TOTAL)
-        if ((Days.daysBetween(savedTimeInDateTime, currentTime) < Days.ONE && Days.daysBetween(
+        if (Days.daysBetween(
                 savedTimeInDateTime,
                 currentTime
-            ) < Days.TWO)
+            ) > Days.ONE
         ) {
-            if (userWrongAnswer >= WRONG_ANSWER_LIMIT) {
+            if (userWrongAnswer < WRONG_ANSWER_LIMIT) {
+                savedStateHandle.set(USER_WRONG_ANSWER_STATE, userWrongAnswer)
+            } else {
+                savedStateHandle.set(USER_WRONG_ANSWER_STATE, 0)
                 rocket.writeInt(USER_WRONG_ANSWER_TOTAL, 0)
-                userWrongAnswer = 0
             }
-            savedStateHandle.set(USER_WRONG_ANSWER_STATE, userWrongAnswer)
             savedStateHandle.set(DIALOG_VISIBILITY_STATE, DIALOG_STATE_GONE)
             launchRandomImageApiCall()
         } else {
-            savedStateHandle.set(USER_WRONG_ANSWER_STATE, WRONG_ANSWER_LIMIT)
-            savedStateHandle.set(DIALOG_VISIBILITY_STATE, DIALOG_STATE_VISIBILE)
+            if (userWrongAnswer >= WRONG_ANSWER_LIMIT) {
+                savedStateHandle.set(USER_WRONG_ANSWER_STATE, WRONG_ANSWER_LIMIT)
+            } else {
+                savedStateHandle.set(USER_WRONG_ANSWER_STATE, userWrongAnswer)
+                launchRandomImageApiCall()
+            }
         }
     }
 
