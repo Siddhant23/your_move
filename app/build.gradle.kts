@@ -5,13 +5,14 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
     compileSdkVersion(29)
     buildToolsVersion("29.0.2")
     defaultConfig {
-        applicationId = "com.sxhardha.someappName"
+        applicationId = "com.coroutinedispatcher.yourmove"
         minSdkVersion(23)
         targetSdkVersion(29)
         versionCode = 1
@@ -54,7 +55,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.lifecycle:lifecycle-extensions:2.1.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
-    implementation("com.google.android.material:material:1.2.0-alpha02")
+    implementation("com.google.android.material:material:1.2.0-alpha03")
     implementation("androidx.fragment:fragment:$fragmentVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
     implementation("com.squareup.picasso:picasso:2.71828")
@@ -70,6 +71,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:4.7.1")
     implementation("com.github.coroutineDispatcher:Rocket:2.0.0-alpha")
     implementation("net.danlew:android.joda:2.10.2")
+    implementation("com.google.firebase:firebase-analytics:17.2.1")
     //processors
     kapt("com.google.dagger:dagger-compiler:2.25.3")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
