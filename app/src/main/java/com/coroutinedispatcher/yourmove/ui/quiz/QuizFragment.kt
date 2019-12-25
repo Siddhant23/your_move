@@ -41,7 +41,6 @@ class QuizFragment : Fragment() {
     private var userTotalScoreTextView: TextView? = null
     private var skipButton: MaterialButton? = null
     private var dialog: AlertDialog? = null
-    private var mustShowDialog = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,7 +104,6 @@ class QuizFragment : Fragment() {
             if (it == WRONG_ANSWER_LIMIT) {
                 skipButton?.isEnabled = false
                 quizViewModel.forceUserToComeBackTomorrow()
-                showInfoDialog()
             }
             userWrongAnswerTextView?.text =
                 "${requireActivity().resources.getString(R.string.wrong_score)} $it"
@@ -127,6 +125,12 @@ class QuizFragment : Fragment() {
                 ).show()
             }
             usersAnswerTextInputEditText?.text?.clear()
+            sharedViewModel.closeKeyboard()
+        }
+
+        skipButton?.setOnClickListener {
+            sharedViewModel.closeKeyboard()
+            quizViewModel.skipAnswer()
         }
     }
 
@@ -146,13 +150,22 @@ class QuizFragment : Fragment() {
     }
 
     override fun onResume() {
-        super.onResume()
-        dialog?.let {
-            if (it.isShowing) {
-                it.dismiss()
+        quizViewModel.dialogState.observe(this, Observer { dialogState ->
+            when (dialogState) {
+                DIALOG_STATE_GONE -> {
+                    dialog?.let {
+                        if (it.isShowing) it.dismiss()
+                    }
+                }
+                DIALOG_STATE_VISIBILE -> {
+                    dialog?.let {
+                        if (it.isShowing) it.dismiss()
+                    }
+                    showInfoDialog()
+                }
             }
-        }
-        quizViewModel.startQuiz()
+        })
+        super.onResume()
     }
 
     override fun onDestroyView() {

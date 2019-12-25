@@ -1,6 +1,8 @@
 package com.coroutinedispatcher.yourmove
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -12,6 +14,7 @@ import com.coroutinedispatcher.yourmove.ui.quiz.QuizFragment
 import com.coroutinedispatcher.yourmove.ui.search.SearchFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +41,12 @@ class MainActivity : AppCompatActivity() {
             it.getContentIfNotHandled()?.let {
                 onBackPressed()
             }
+        })
+
+        sharedViewModel.closeKeyboardEvent.observe(this, Observer {
+            val inputMethodManager: InputMethodManager =
+                getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         })
     }
 
