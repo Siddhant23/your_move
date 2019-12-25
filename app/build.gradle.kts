@@ -72,6 +72,7 @@ dependencies {
     implementation("com.github.coroutineDispatcher:Rocket:2.0.0-alpha")
     implementation("net.danlew:android.joda:2.10.2")
     implementation("com.google.firebase:firebase-analytics:17.2.1")
+    implementation("com.google.firebase:firebase-database:19.2.0")
     //processors
     kapt("com.google.dagger:dagger-compiler:2.25.3")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")

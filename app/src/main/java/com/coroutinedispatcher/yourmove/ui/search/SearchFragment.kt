@@ -1,26 +1,33 @@
 package com.coroutinedispatcher.yourmove.ui.search
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.coroutinedispatcher.yourmove.R
+import com.coroutinedispatcher.yourmove.YourMoveApplication
+import com.coroutinedispatcher.yourmove.utils.savedStateViewModel
+import timber.log.Timber
 
 class SearchFragment : Fragment() {
 
-    private lateinit var viewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by savedStateViewModel {
+        YourMoveApplication.getYourMoveComponent().searchViewModelFactory.create(it)
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        searchViewModel.m.observe(this, Observer {
+            Timber.d(it)
+        })
     }
-
 }

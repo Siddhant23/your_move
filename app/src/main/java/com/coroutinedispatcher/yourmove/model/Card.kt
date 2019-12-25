@@ -1,5 +1,6 @@
 package com.coroutinedispatcher.yourmove.model
 
+import com.google.firebase.database.IgnoreExtraProperties
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -9,9 +10,9 @@ data class Card(
     val id: String,
     @Json(name = "name")
     val name: String,
-    @Json(name="type")
+    @Json(name = "type")
     val type: String,
-    @Json(name="desc")
+    @Json(name = "desc")
     val description: String,
     @Json(name = "atk")
     val attackPoints: String?,
@@ -25,4 +26,18 @@ data class Card(
     val attribute: String?,
     @Json(name = "card_images")
     val cardImages: List<CardImage>
+)
+
+@IgnoreExtraProperties
+data class YuGiOhCard(
+    val id: String? = "",
+    val name: String? = "",
+    val type: String? = "",
+    val description: String? = "",
+    val attackPoints: String? = "",
+    val deffencePoints: String? = "",
+    val level: String? = "",
+    val race: String? = "",
+    val attribute: String? = "",
+    val cardImages: List<CardImage>? = listOf()
 )
