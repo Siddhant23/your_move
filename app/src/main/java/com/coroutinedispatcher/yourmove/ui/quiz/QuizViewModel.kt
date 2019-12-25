@@ -54,6 +54,8 @@ class QuizViewModel @AssistedInject constructor(
         savedStateHandle.set(USER_CORRECT_ANSWER_STATE, userCorrectAnswer)
         savedStateHandle.set(USER_SKIPED_ANSWER_STATE, userSkippedAnswer)
         val userTotalPoints = rocket.readInt(USER_TOTAL_SCORE_KEY)
+        val currentTime = DateTime().millis
+        rocket.writeLong(USER_QUIZ_PREVENTION_TIME_KEY, currentTime)
         savedStateHandle.set(USER_TOTAL_SCORE_STATE, userTotalPoints)
         checkIfHoursHavePassed()
     }
@@ -63,22 +65,21 @@ class QuizViewModel @AssistedInject constructor(
         val savedTimeInDateTime = DateTime(savedTime)
         val currentTime = DateTime()
         userWrongAnswer = rocket.readInt(USER_WRONG_ANSWER_TOTAL)
-        if (Days.daysBetween(
+        if ((Days.daysBetween(savedTimeInDateTime, currentTime) < Days.ONE && Days.daysBetween(
                 savedTimeInDateTime,
                 currentTime
-            ) <= Days.ONE || userWrongAnswer == WRONG_ANSWER_LIMIT
+            ) < Days.TWO)
         ) {
-            savedStateHandle.set(USER_WRONG_ANSWER_STATE, WRONG_ANSWER_LIMIT)
-            savedStateHandle.set(DIALOG_VISIBILITY_STATE, DIALOG_STATE_VISIBILE)
-        } else {
+            if (userWrongAnswer >= WRONG_ANSWER_LIMIT) {
+                rocket.writeInt(USER_WRONG_ANSWER_TOTAL, 0)
+                userWrongAnswer = 0
+            }
             savedStateHandle.set(USER_WRONG_ANSWER_STATE, userWrongAnswer)
             savedStateHandle.set(DIALOG_VISIBILITY_STATE, DIALOG_STATE_GONE)
             launchRandomImageApiCall()
-        }
-        if (Days.daysBetween(savedTimeInDateTime, currentTime) > Days.ONE) {
-            rocket.writeInt(USER_WRONG_ANSWER_TOTAL, 0)
-            savedStateHandle.set(DIALOG_VISIBILITY_STATE, DIALOG_STATE_GONE)
-            savedStateHandle.set(USER_WRONG_ANSWER_STATE, 0)
+        } else {
+            savedStateHandle.set(USER_WRONG_ANSWER_STATE, WRONG_ANSWER_LIMIT)
+            savedStateHandle.set(DIALOG_VISIBILITY_STATE, DIALOG_STATE_VISIBILE)
         }
     }
 
