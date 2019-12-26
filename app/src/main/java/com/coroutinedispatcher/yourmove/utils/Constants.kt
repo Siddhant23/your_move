@@ -1,6 +1,7 @@
 package com.coroutinedispatcher.yourmove.utils
 
 const val JUST_IMAGE_URL = "https://storage.googleapis.com/ygoprodeck.com/pics_artgame/"
+const val SMALL_IMAGE_URL = "https://storage.googleapis.com/ygoprodeck.com/pics_small/"
 const val BUTTON_STATE_ERROR = "Error/Retry"
 const val BUTTON_STATE_WAIT = "Loading"
 const val BUTTON_STATE_SUCESS = "Submit"

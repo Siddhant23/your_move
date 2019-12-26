@@ -16,11 +16,6 @@ data class CardImage(
 )
 
 @IgnoreExtraProperties
-data class CardImageList(
-    val list: List<YuGiOhCardImage> = listOf()
-)
-
-@IgnoreExtraProperties
 data class YuGiOhCardImage(
     val id: String = "",
     val imageUrl: String = "",

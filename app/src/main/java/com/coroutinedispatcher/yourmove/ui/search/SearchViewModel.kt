@@ -36,31 +36,12 @@ class SearchViewModel @AssistedInject constructor(
 
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.forEach {
-                    val yugiohcard = it.getValue(YuGiOhCard::class.java)
+                    val imageUrlSmall =
+                        it.child("card_images").child("0").child("image_url_small")
+                            .getValue(String::class.java)
 
-                    yugiohcard?.let { card ->
-                        val cardImages =
-                            it.child("card_images").child("0")
-                                .getValue(YuGiOhCardImage::class.java)
-
-                        cardImages?.let { cardImage ->
-                            mutableListOfImages.add(
-                                YuGiOhCardImage(
-                                    id = cardImage.id,
-                                    imageUrlSmall = cardImage.imageUrlSmall
-                                )
-                            )
-                        }
-                        mutableListOfCards.add(
-                            YuGiOhCard(
-                                name = card.name,
-                                type = card.type,
-                                cardImages = mutableListOfImages
-                            )
-                        )
-                    }
+                    Timber.tag("STAVRO").d(imageUrlSmall)
                 }
-                savedStateHandle.set(YUGIOH_CARDS_STATE, mutableListOfCards)
             }
         })
     }
