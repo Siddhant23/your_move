@@ -6,6 +6,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.DiffUtil
+import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 
 inline fun <reified T : ViewModel> Fragment.savedStateViewModel(
     crossinline provider: (SavedStateHandle) -> T
@@ -18,4 +20,12 @@ inline fun <reified T : ViewModel> Fragment.savedStateViewModel(
         ): T =
             provider(handle) as T
     }
+}
+
+val DIFF_UTIL_CARDS = object : DiffUtil.ItemCallback<YuGiOhCard>() {
+    override fun areItemsTheSame(oldItem: YuGiOhCard, newItem: YuGiOhCard): Boolean =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: YuGiOhCard, newItem: YuGiOhCard): Boolean =
+        oldItem.name == newItem.name
 }

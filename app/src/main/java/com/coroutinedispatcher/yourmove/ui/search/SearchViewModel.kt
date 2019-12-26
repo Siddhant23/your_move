@@ -1,9 +1,11 @@
 package com.coroutinedispatcher.yourmove.ui.search
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
+import com.coroutinedispatcher.yourmove.model.YuGiOhCardImage
+import com.coroutinedispatcher.yourmove.utils.YUGIOH_CARDS_STATE
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -17,7 +19,9 @@ class SearchViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val m = MutableLiveData<String>()
+    private val mutableListOfCards: MutableList<YuGiOhCard> = mutableListOf()
+    private val mutableListOfImages: MutableList<YuGiOhCardImage> = mutableListOf()
+    val cardsLiveData: LiveData<List<YuGiOhCard>> = savedStateHandle.getLiveData(YUGIOH_CARDS_STATE)
 
     @AssistedInject.Factory
     interface Factory {
@@ -33,10 +37,31 @@ class SearchViewModel @AssistedInject constructor(
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.forEach {
                     val yugiohcard = it.getValue(YuGiOhCard::class.java)
-                    m.value = yugiohcard?.name
-                }
-            }
 
+                    yugiohcard?.let { card ->
+                        val cardImages =
+                            it.child("card_images").child("0")
+                                .getValue(YuGiOhCardImage::class.java)
+
+                        cardImages?.let { cardImage ->
+                            mutableListOfImages.add(
+                                YuGiOhCardImage(
+                                    id = cardImage.id,
+                                    imageUrlSmall = cardImage.imageUrlSmall
+                                )
+                            )
+                        }
+                        mutableListOfCards.add(
+                            YuGiOhCard(
+                                name = card.name,
+                                type = card.type,
+                                cardImages = mutableListOfImages
+                            )
+                        )
+                    }
+                }
+                savedStateHandle.set(YUGIOH_CARDS_STATE, mutableListOfCards)
+            }
         })
     }
 }

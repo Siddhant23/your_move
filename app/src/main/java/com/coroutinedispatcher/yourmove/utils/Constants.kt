@@ -14,6 +14,7 @@ const val USER_WRONG_ANSWER_STATE = "user_wrong_answer_state"
 const val USER_SKIPED_ANSWER_STATE = "user_wrong_answer_state"
 const val USER_TOTAL_SCORE_STATE = "user_total_Score_state"
 const val DIALOG_VISIBILITY_STATE = "dialog_visibility_State"
+const val YUGIOH_CARDS_STATE = "yugioh_cards_list_state"
 
 //Rocket
 const val SHARED_PREFERENCES_TAG = "your_move_shared_preferences_tag"

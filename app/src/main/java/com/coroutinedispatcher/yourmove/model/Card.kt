@@ -39,5 +39,5 @@ data class YuGiOhCard(
     val level: String? = "",
     val race: String? = "",
     val attribute: String? = "",
-    val cardImages: List<CardImage>? = listOf()
+    val cardImages: List<YuGiOhCardImage>? = listOf()
 )

@@ -14,4 +14,7 @@
     <string name="skip">Skip</string>
     <string name="come_tomorrow">You have exeeded the wrong answer limit for today, please come back tomorrow</string>
     <string name="ok">Ok</string>
+    <string name="search">Search</string>
+    <string name="card_name">Name:</string>
+    <string name="card_type">Type:</string>
 </resources>
