@@ -42,22 +42,12 @@ class CardAdapter @Inject constructor(
                 val ivYuGiOhImage = findViewById<ImageView>(R.id.iv_single_yugioh_image)
                 tvCardName.text = item?.name
                 tvCardType.text = item?.type
-                item?.cardImages?.let {
-                    if (it.isNotEmpty()) {
-                        val url = it[0].imageUrlSmall
-                        picasso.load(url.toString()).fit().centerCrop()
-                            .placeholder(R.drawable.yugioh_facedown_card)
-                            .error(R.drawable.yugioh_facedown_card)
-                            .into(ivYuGiOhImage)
-                    } else {
-                        picasso.load(R.drawable.yugioh_facedown_card)
-                            .fit()
-                            .centerCrop()
-                            .into(ivYuGiOhImage)
-                    }
-                }
+                picasso.load(item?.imageUrlSmall.toString()).fit().centerCrop()
+                    .placeholder(R.drawable.yugioh_facedown_card)
+                    .error(R.drawable.yugioh_facedown_card)
+                    .into(ivYuGiOhImage)
             }
-
         }
+
     }
 }

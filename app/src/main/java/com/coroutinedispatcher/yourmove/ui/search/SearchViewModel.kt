@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
-import com.coroutinedispatcher.yourmove.model.YuGiOhCardImage
 import com.coroutinedispatcher.yourmove.utils.YUGIOH_CARDS_STATE
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,7 +19,6 @@ class SearchViewModel @AssistedInject constructor(
 ) : ViewModel() {
 
     private val mutableListOfCards: MutableList<YuGiOhCard> = mutableListOf()
-    private val mutableListOfImages: MutableList<YuGiOhCardImage> = mutableListOf()
     val cardsLiveData: LiveData<List<YuGiOhCard>> = savedStateHandle.getLiveData(YUGIOH_CARDS_STATE)
 
     @AssistedInject.Factory
@@ -35,13 +33,24 @@ class SearchViewModel @AssistedInject constructor(
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                p0.children.forEach {
+                p0.children.forEach { data ->
                     val imageUrlSmall =
-                        it.child("card_images").child("0").child("image_url_small")
+                        data.child("card_images").child("0").child("image_url_small")
                             .getValue(String::class.java)
+                    val yugiohcards = data.getValue(YuGiOhCard::class.java)
 
-                    Timber.tag("STAVRO").d(imageUrlSmall)
+                    yugiohcards?.let { card ->
+                        mutableListOfCards.add(
+                            YuGiOhCard(
+                                name = card.name,
+                                type = card.type,
+                                imageUrlSmall = imageUrlSmall
+                            )
+                        )
+                    }
                 }
+
+                savedStateHandle.set(YUGIOH_CARDS_STATE, mutableListOfCards)
             }
         })
     }

@@ -39,5 +39,7 @@ data class YuGiOhCard(
     val level: String? = "",
     val race: String? = "",
     val attribute: String? = "",
-    val cardImages: List<YuGiOhCardImage>? = listOf()
+    val cardImages: List<YuGiOhCardImage>? = listOf(),
+    val imageUrl: String? = "",
+    val imageUrlSmall: String? = ""
 )
