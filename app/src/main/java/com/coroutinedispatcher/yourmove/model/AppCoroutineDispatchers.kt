@@ -2,7 +2,7 @@ package com.coroutinedispatcher.yourmove.model
 
 import kotlinx.coroutines.CoroutineDispatcher
 
-class AppCoroutineDispatchers(
-    val mainDispatcher: CoroutineDispatcher,
-    val ioDispatcher: CoroutineDispatcher
+data class AppCoroutineDispatchers(
+    val ioDispatchers: CoroutineDispatcher,
+    val mainDispatcher: CoroutineDispatcher
 )

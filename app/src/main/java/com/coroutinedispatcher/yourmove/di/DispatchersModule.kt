@@ -8,11 +8,12 @@ import javax.inject.Singleton
 
 @Module
 object DispatchersModule {
+
     @Provides
     @JvmStatic
     @Singleton
-    fun provideAppCoroutineDispatchers(): AppCoroutineDispatchers = AppCoroutineDispatchers(
+    fun provideCoroutineDispatchers(): AppCoroutineDispatchers = AppCoroutineDispatchers(
         mainDispatcher = Dispatchers.Main,
-        ioDispatcher = Dispatchers.IO
+        ioDispatchers = Dispatchers.IO
     )
 }

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.coroutinedispatcher.yourmove.ui.search.SearchFragment">
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -19,6 +18,7 @@
         app:startIconDrawable="@drawable/ic_search_white_24dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_user_search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search"
