@@ -2,7 +2,6 @@ package com.coroutinedispatcher.yourmove.di
 
 import android.app.Application
 import com.coroutinedispatcher.yourmove.utils.SHARED_PREFERENCES_TAG
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.stavro_xhardha.rocket.Rocket
 import dagger.Module
@@ -21,5 +20,5 @@ object PersistenceModule {
     @Provides
     @JvmStatic
     @Singleton
-    fun provideFirebaseDatabase(): DatabaseReference = FirebaseDatabase.getInstance().reference
+    fun provideFirebaseDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance()
 }
