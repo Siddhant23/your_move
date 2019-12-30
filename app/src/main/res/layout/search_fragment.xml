@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/cl_search_fragment_holder"
     tools:context="com.coroutinedispatcher.yourmove.ui.search.SearchFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -40,12 +39,22 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ProgressBar
-        android:id="@+id/pb_search"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tv_offline"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/round_background"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/user_status"
+        android:textColor="@color/md_grey_700"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

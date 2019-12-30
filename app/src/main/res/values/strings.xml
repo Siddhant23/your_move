@@ -20,5 +20,8 @@
     <string name="please_wait_for_the_list_to_be_filled">Please wait until data is loaded</string>
     <string name="error_occurred">You are offline, please connect to network</string>
     <string name="retry_connection">Retry</string>
-    <string name="you_are_connected">You are online</string>
+    <string name="you_are_connected">Synced</string>
+    <string name="user_status">You are offline</string>
+    <string name="you_are_offline">You are offline</string>
+    <string name="loading">Syncing...</string>
 </resources>

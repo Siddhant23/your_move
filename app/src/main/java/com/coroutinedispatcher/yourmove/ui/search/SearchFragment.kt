@@ -6,31 +6,29 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.YourMoveApplication
+import com.coroutinedispatcher.yourmove.utils.LOADING
+import com.coroutinedispatcher.yourmove.utils.OFFLINE
+import com.coroutinedispatcher.yourmove.utils.SYNCED
 import com.coroutinedispatcher.yourmove.utils.savedStateViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
 class SearchFragment : Fragment(), CardAdapterContract {
 
     private var cardRecyclerView: RecyclerView? = null
+    private var etUserSearchInput: TextInputEditText? = null
+    private var offlineTextView: TextView? = null
+    private val searchViewModel: SearchViewModel by savedStateViewModel {
+        YourMoveApplication.getYourMoveComponent().searchViewModelFactory.create(it)
+    }
     private val cardAdapter: CardAdapter by lazy {
         val picasso = YourMoveApplication.getYourMoveComponent().picasso
         CardAdapter(picasso, this)
-    }
-    private var etUserSearchInput: TextInputEditText? = null
-    private var pbSearch: ProgressBar? = null
-    private var clSearchFragmentHolder: ConstraintLayout? = null
-    private var errorSnackBar: Snackbar? = null
-
-    private val searchViewModel: SearchViewModel by savedStateViewModel {
-        YourMoveApplication.getYourMoveComponent().searchViewModelFactory.create(it)
     }
 
     override fun onCreateView(
@@ -49,35 +47,30 @@ class SearchFragment : Fragment(), CardAdapterContract {
             cardAdapter.saveListState(it)
             etUserSearchInput?.isEnabled = true
         })
-        searchViewModel.errorLiveData.observe(this, Observer { errorVisibility ->
-            clSearchFragmentHolder?.let { rootView ->
-                if (errorVisibility == View.VISIBLE) {
-                    errorSnackBar = Snackbar.make(
-                        rootView,
-                        R.string.error_occurred,
-                        Snackbar.LENGTH_INDEFINITE
-                    )
-                    errorSnackBar?.show()
-                } else {
-                    errorSnackBar = Snackbar.make(
-                        rootView,
-                        R.string.you_are_connected,
-                        Snackbar.LENGTH_SHORT
-                    )
-                    errorSnackBar?.show()
+        searchViewModel.loadingLiveData.observe(this, Observer {
+            when (it) {
+                OFFLINE -> {
+                    offlineTextView?.text =
+                        requireActivity().resources.getString(R.string.you_are_offline)
+                    offlineTextView?.visibility = View.VISIBLE
+                }
+                SYNCED -> {
+                    offlineTextView?.text =
+                        requireActivity().resources.getString(R.string.you_are_connected)
+                    offlineTextView?.visibility = View.GONE
+                }
+                LOADING -> {
+                    offlineTextView?.text = requireActivity().resources.getString(R.string.loading)
+                    offlineTextView?.visibility = View.VISIBLE
                 }
             }
-        })
-        searchViewModel.loadingLiveData.observe(this, Observer {
-            pbSearch?.visibility = it
         })
     }
 
     private fun initialiseComponents(view: View) {
         etUserSearchInput = view.findViewById(R.id.et_user_search_input)
         cardRecyclerView = view.findViewById(R.id.rv_yugioh_cards)
-        pbSearch = view.findViewById(R.id.pb_search)
-        clSearchFragmentHolder = view.findViewById(R.id.cl_search_fragment_holder)
+        offlineTextView = view.findViewById(R.id.tv_offline)
         cardRecyclerView?.adapter = cardAdapter
         etUserSearchInput?.isEnabled = false
     }
@@ -100,9 +93,7 @@ class SearchFragment : Fragment(), CardAdapterContract {
         cardRecyclerView?.adapter = null
         cardRecyclerView = null
         etUserSearchInput = null
-        clSearchFragmentHolder = null
-        pbSearch = null
-        errorSnackBar = null
+        offlineTextView = null
         super.onDestroyView()
     }
 
