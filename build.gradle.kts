@@ -7,9 +7,11 @@ buildscript {
         jcenter()
     }
     dependencies {
+        val navVersion = "2.1.0"
         classpath("com.android.tools.build:gradle:3.5.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.google.gms:google-services:4.3.3")
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion")
     }
 }
 

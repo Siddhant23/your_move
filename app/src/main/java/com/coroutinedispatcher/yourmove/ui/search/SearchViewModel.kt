@@ -68,6 +68,7 @@ class SearchViewModel @AssistedInject constructor(
                     yugiohcards?.let { card ->
                         mutableListOfCards.add(
                             YuGiOhCard(
+                                id = card.id,
                                 name = card.name,
                                 type = card.type,
                                 imageUrlSmall = imageUrlSmall,

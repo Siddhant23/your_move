@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 import com.coroutinedispatcher.yourmove.utils.DIFF_UTIL_CARDS
+import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
@@ -33,19 +34,21 @@ class CardAdapter @Inject constructor(
         )
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        holder.bind(getItem(position), picasso)
+        holder.bind(getItem(position), picasso, cardAdapterContract)
     }
 
     class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         fun bind(
             item: YuGiOhCard?,
-            picasso: Picasso
+            picasso: Picasso,
+            cardAdapterContract: CardAdapterContract
         ) {
             with(itemView) {
                 val tvCardName = findViewById<TextView>(R.id.tv_card_name)
                 val tvCardType = findViewById<TextView>(R.id.tv_card_type)
                 val ivYuGiOhImage = findViewById<ImageView>(R.id.iv_single_yugioh_image)
+                val cardViewHolder = findViewById<MaterialCardView>(R.id.cv_holder)
                 tvCardName.text = item?.name
                 tvCardType.text = "${item?.type}, ${item?.race}"
                 picasso.load(item?.imageUrlSmall.toString())
@@ -53,14 +56,18 @@ class CardAdapter @Inject constructor(
                     .placeholder(R.drawable.yugioh_facedown_card)
                     .error(R.drawable.yugioh_facedown_card)
                     .into(ivYuGiOhImage)
+                cardViewHolder.setOnClickListener {
+                    item?.id?.let { it1 -> cardAdapterContract.onCardClick(it1) }
+                }
             }
         }
     }
 
     override fun getFilter(): Filter = object : Filter() {
+        @SuppressLint("DefaultLocale")
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val stringForFilter = constraint.toString()
-            var fullList: MutableList<YuGiOhCard>
+            val fullList: MutableList<YuGiOhCard>
             fullList = if (stringForFilter.isNotEmpty()) {
                 val filteredList = mutableListOf<YuGiOhCard>()
                 fullListOfData.forEach {

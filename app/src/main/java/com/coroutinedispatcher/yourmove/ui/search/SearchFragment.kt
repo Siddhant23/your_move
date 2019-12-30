@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.YourMoveApplication
@@ -101,6 +102,8 @@ class SearchFragment : Fragment(), CardAdapterContract {
         cardRecyclerView?.scrollToPosition(0)
     }
 
-    override fun onCardClick() {
+    override fun onCardClick(cardId: String) {
+        val action = SearchFragmentDirections.actionSearchFragmentToCardDetailsFragment(cardId)
+        findNavController().navigate(action)
     }
 }
