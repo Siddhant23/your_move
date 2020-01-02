@@ -11,3 +11,7 @@ const val SHARED_PREFERENCES_TAG = "your_move_shared_preferences_tag"
 const val SYNCED = 1
 const val LOADING = 0
 const val OFFLINE = -1
+
+//image_url's
+const val IMAGE_URL_NORMAL = "https://storage.googleapis.com/ygoprodeck.com/pics/"
+const val IMAGE_URL_SMALL = "https://storage.googleapis.com/ygoprodeck.com/pics_small/"

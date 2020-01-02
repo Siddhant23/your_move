@@ -51,13 +51,13 @@ class CardAdapter @Inject constructor(
                 val cardViewHolder = findViewById<MaterialCardView>(R.id.cv_holder)
                 tvCardName.text = item?.name
                 tvCardType.text = "${item?.type}, ${item?.race}"
-                picasso.load(item?.imageUrlSmall.toString())
-                    .resize(280, 410)
-                    .placeholder(R.drawable.yugioh_facedown_card)
-                    .error(R.drawable.yugioh_facedown_card)
-                    .into(ivYuGiOhImage)
+//                picasso.load(item?.imageUrlSmall.toString())
+//                    .resize(280, 410)
+//                    .placeholder(R.drawable.yugioh_facedown_card)
+//                    .error(R.drawable.yugioh_facedown_card)
+//                    .into(ivYuGiOhImage)
                 cardViewHolder.setOnClickListener {
-                    item?.id?.let { it1 -> cardAdapterContract.onCardClick(it1) }
+                    //item?.id?.let { it1 -> cardAdapterContract.onCardClick(it1) }
                 }
             }
         }

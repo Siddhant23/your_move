@@ -19,6 +19,17 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true",
+                    "room.expandProjection" to "true"
+                )
+            }
+        }
+
     }
 
     buildTypes {
@@ -47,6 +58,7 @@ dependencies {
     val fragmentVersion = "1.2.0-rc03"
     val lifecycleVersion = "2.2.0-rc03"
     val navVersion = "2.1.0"
+    val roomVersion = "2.2.3"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.extra.get("kotlinVersion")}")
@@ -67,15 +79,20 @@ dependencies {
     implementation("com.jakewharton.timber:timber:4.7.1")
     implementation("com.github.coroutineDispatcher:Rocket:2.0.0-alpha")
     implementation("net.danlew:android.joda:2.10.2")
-    implementation("com.google.firebase:firebase-analytics:17.2.1")
-    implementation("com.google.firebase:firebase-database:19.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+    implementation("com.squareup.moshi:moshi:1.9.2")
+    implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
     //processors
     kapt("com.google.dagger:dagger-compiler:2.25.3")
     kapt("com.squareup.inject:assisted-inject-processor-dagger2:0.5.2")
     //tests
     testImplementation("junit:junit:4.12")
+    testImplementation("androidx.room:room-testing:$roomVersion")
     //android tests
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")

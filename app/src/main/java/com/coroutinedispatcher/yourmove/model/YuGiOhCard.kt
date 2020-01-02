@@ -1,21 +1,28 @@
 package com.coroutinedispatcher.yourmove.model
 
-import android.os.Parcelable
-import com.google.firebase.database.IgnoreExtraProperties
-import kotlinx.android.parcel.Parcelize
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@IgnoreExtraProperties
-@Parcelize
+@Entity(tableName = "yugioh_cards")
 data class YuGiOhCard(
-    val id: String? = "",
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "id")
+    val id: Int? = 0,
+    @ColumnInfo(name = "name")
     val name: String? = "",
+    @ColumnInfo(name = "type")
     val type: String? = "",
+    @ColumnInfo(name = "desc")
     val description: String? = "",
-    val attackPoints: String? = "",
-    val deffencePoints: String? = "",
-    val level: String? = "",
+    @ColumnInfo(name = "race")
     val race: String? = "",
-    val attribute: String? = "",
-    val imageUrl: String? = "",
-    val imageUrlSmall: String? = ""
-) : Parcelable
+    @ColumnInfo(name = "atk")
+    val attackPoints: Int? = -1,
+    @ColumnInfo(name = "def")
+    val deffencePoints: Int? = -1,
+    @ColumnInfo(name = "level")
+    val level: Int? = -1,
+    @ColumnInfo(name = "attribute")
+    val attribute: String? = ""
+)
