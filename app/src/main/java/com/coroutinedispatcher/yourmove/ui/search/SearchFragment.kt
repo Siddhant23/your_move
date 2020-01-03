@@ -43,29 +43,29 @@ class SearchFragment : Fragment(), CardAdapterContract {
         super.onViewCreated(view, savedInstanceState)
         initialiseComponents(view)
         afterInitialize()
-        searchViewModel.cardsLiveData.observe(this, Observer {
+        searchViewModel.yuGiOhCards.observe(this, Observer {
             cardAdapter.submitList(it)
             cardAdapter.saveListState(it)
             etUserSearchInput?.isEnabled = true
         })
-        searchViewModel.loadingLiveData.observe(this, Observer {
-            when (it) {
-                OFFLINE -> {
-                    offlineTextView?.text =
-                        requireActivity().resources.getString(R.string.you_are_offline)
-                    offlineTextView?.visibility = View.VISIBLE
-                }
-                SYNCED -> {
-                    offlineTextView?.text =
-                        requireActivity().resources.getString(R.string.you_are_connected)
-                    offlineTextView?.visibility = View.GONE
-                }
-                LOADING -> {
-                    offlineTextView?.text = requireActivity().resources.getString(R.string.loading)
-                    offlineTextView?.visibility = View.VISIBLE
-                }
-            }
-        })
+//        searchViewModel.loadingLiveData.observe(this, Observer {
+//            when (it) {
+//                OFFLINE -> {
+//                    offlineTextView?.text =
+//                        requireActivity().resources.getString(R.string.you_are_offline)
+//                    offlineTextView?.visibility = View.VISIBLE
+//                }
+//                SYNCED -> {
+//                    offlineTextView?.text =
+//                        requireActivity().resources.getString(R.string.you_are_connected)
+//                    offlineTextView?.visibility = View.GONE
+//                }
+//                LOADING -> {
+//                    offlineTextView?.text = requireActivity().resources.getString(R.string.loading)
+//                    offlineTextView?.visibility = View.VISIBLE
+//                }
+//            }
+//        })
     }
 
     private fun initialiseComponents(view: View) {

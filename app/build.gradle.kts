@@ -59,6 +59,7 @@ dependencies {
     val lifecycleVersion = "2.2.0-rc03"
     val navVersion = "2.1.0"
     val roomVersion = "2.2.3"
+    val pagingVersion = "2.1.1"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.extra.get("kotlinVersion")}")
@@ -81,12 +82,10 @@ dependencies {
     implementation("net.danlew:android.joda:2.10.2")
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("com.squareup.moshi:moshi:1.9.2")
-    implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.paging:paging-runtime:$pagingVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
     //processors
     kapt("com.google.dagger:dagger-compiler:2.25.3")
     kapt("com.squareup.inject:assisted-inject-processor-dagger2:0.5.2")

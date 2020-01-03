@@ -1,10 +1,9 @@
 package com.coroutinedispatcher.yourmove.di
 
 import android.app.Application
-import com.coroutinedispatcher.yourmove.db.YuGiOhDatabase
+import com.coroutinedispatcher.yourmove.db.YuGiOhDao
 import com.coroutinedispatcher.yourmove.model.AppCoroutineDispatchers
 import com.coroutinedispatcher.yourmove.ui.search.SearchViewModel
-import com.squareup.moshi.Moshi
 import com.squareup.picasso.Picasso
 import com.stavro_xhardha.rocket.Rocket
 import dagger.BindsInstance
@@ -23,6 +22,5 @@ interface YourMoveApplicationComponent {
     val rocket: Rocket
     val searchViewModelFactory: SearchViewModel.Factory
     val appCoroutineDispatchers: AppCoroutineDispatchers
-    val moshi: Moshi
-    val db: YuGiOhDatabase
+    val yuGiOhDao: YuGiOhDao
 }
