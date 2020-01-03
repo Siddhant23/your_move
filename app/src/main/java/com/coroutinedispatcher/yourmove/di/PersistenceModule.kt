@@ -34,7 +34,6 @@ object PersistenceModule {
     fun provideDb(application: Application): YuGiOhDatabase =
         Room.databaseBuilder(application, YuGiOhDatabase::class.java, "YuGiOhDatabase.db")
             .createFromAsset("database/yugioh_database.db")
-            .fallbackToDestructiveMigration()
             .build()
 
     @Provides

@@ -1,19 +1,16 @@
 package com.coroutinedispatcher.yourmove.ui.search
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.paging.LivePagedListBuilder
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.coroutinedispatcher.yourmove.db.YuGiOhDao
 import com.coroutinedispatcher.yourmove.model.AppCoroutineDispatchers
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
-import com.coroutinedispatcher.yourmove.utils.SEARCH_FRAGMENT_LOADING_STATE
-import com.coroutinedispatcher.yourmove.utils.YUGIOH_CARDS_STATE
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 
 
 class SearchViewModel @AssistedInject constructor(
@@ -22,28 +19,23 @@ class SearchViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val mutableListOfCards: MutableList<YuGiOhCard> = mutableListOf()
-    val cardsLiveData: LiveData<List<YuGiOhCard>> = savedStateHandle.getLiveData(YUGIOH_CARDS_STATE)
-    val loadingLiveData: LiveData<Int> = savedStateHandle.getLiveData(
-        SEARCH_FRAGMENT_LOADING_STATE
-    )
-
     private val listConfig = PagedList.Config.Builder()
+        .setMaxSize(100000)
         .setPageSize(20)
-        .setEnablePlaceholders(false)
+        .setEnablePlaceholders(true)
         .build()
 
-    val yuGiOhCards: LiveData<PagedList<YuGiOhCard>> =
-        liveData(appCoroutineDispatchers.ioDispatchers) {
-            val data = yugiohdao.selectAll()
-            withContext(appCoroutineDispatchers.mainDispatcher) {
-                val sth = LivePagedListBuilder(data, listConfig).build()
-                emit(sth.value!!)
-            }
-        }
+    var yuGiOhCards: MutableLiveData<List<YuGiOhCard>> = MutableLiveData()
 
     @AssistedInject.Factory
     interface Factory {
         fun create(savedStateHandle: SavedStateHandle): SearchViewModel
+    }
+
+    init {
+        viewModelScope.launch {
+            val data = yugiohdao.selectAllTest()
+            yuGiOhCards.postValue(data)
+        }
     }
 }

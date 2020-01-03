@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 import com.coroutinedispatcher.yourmove.utils.DIFF_UTIL_CARDS
+import com.coroutinedispatcher.yourmove.utils.IMAGE_URL_NORMAL
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
@@ -51,13 +52,13 @@ class CardAdapter @Inject constructor(
                 val cardViewHolder = findViewById<MaterialCardView>(R.id.cv_holder)
                 tvCardName.text = item?.name
                 tvCardType.text = "${item?.type}, ${item?.race}"
-//                picasso.load(item?.imageUrlSmall.toString())
-//                    .resize(280, 410)
-//                    .placeholder(R.drawable.yugioh_facedown_card)
-//                    .error(R.drawable.yugioh_facedown_card)
-//                    .into(ivYuGiOhImage)
+                picasso.load("${IMAGE_URL_NORMAL}${item?.id}.jpg")
+                    .resize(280, 410)
+                    .placeholder(R.drawable.yugioh_facedown_card)
+                    .error(R.drawable.yugioh_facedown_card)
+                    .into(ivYuGiOhImage)
                 cardViewHolder.setOnClickListener {
-                    //item?.id?.let { it1 -> cardAdapterContract.onCardClick(it1) }
+                    item?.id?.let { clickedItemId -> cardAdapterContract.onCardClick(clickedItemId.toString()) }
                 }
             }
         }

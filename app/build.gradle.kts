@@ -84,7 +84,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.paging:paging-runtime:$pagingVersion")
+    implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
     //processors
     kapt("com.google.dagger:dagger-compiler:2.25.3")

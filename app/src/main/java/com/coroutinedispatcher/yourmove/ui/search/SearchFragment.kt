@@ -23,7 +23,6 @@ class SearchFragment : Fragment(), CardAdapterContract {
 
     private var cardRecyclerView: RecyclerView? = null
     private var etUserSearchInput: TextInputEditText? = null
-    private var offlineTextView: TextView? = null
     private val searchViewModel: SearchViewModel by savedStateViewModel {
         YourMoveApplication.getYourMoveComponent().searchViewModelFactory.create(it)
     }
@@ -45,33 +44,14 @@ class SearchFragment : Fragment(), CardAdapterContract {
         afterInitialize()
         searchViewModel.yuGiOhCards.observe(this, Observer {
             cardAdapter.submitList(it)
-            cardAdapter.saveListState(it)
+//            cardAdapter.saveListState(it)
             etUserSearchInput?.isEnabled = true
         })
-//        searchViewModel.loadingLiveData.observe(this, Observer {
-//            when (it) {
-//                OFFLINE -> {
-//                    offlineTextView?.text =
-//                        requireActivity().resources.getString(R.string.you_are_offline)
-//                    offlineTextView?.visibility = View.VISIBLE
-//                }
-//                SYNCED -> {
-//                    offlineTextView?.text =
-//                        requireActivity().resources.getString(R.string.you_are_connected)
-//                    offlineTextView?.visibility = View.GONE
-//                }
-//                LOADING -> {
-//                    offlineTextView?.text = requireActivity().resources.getString(R.string.loading)
-//                    offlineTextView?.visibility = View.VISIBLE
-//                }
-//            }
-//        })
     }
 
     private fun initialiseComponents(view: View) {
         etUserSearchInput = view.findViewById(R.id.et_user_search_input)
         cardRecyclerView = view.findViewById(R.id.rv_yugioh_cards)
-        offlineTextView = view.findViewById(R.id.tv_offline)
         cardRecyclerView?.adapter = cardAdapter
         etUserSearchInput?.isEnabled = false
     }
@@ -94,7 +74,6 @@ class SearchFragment : Fragment(), CardAdapterContract {
         cardRecyclerView?.adapter = null
         cardRecyclerView = null
         etUserSearchInput = null
-        offlineTextView = null
         super.onDestroyView()
     }
 
