@@ -9,7 +9,4 @@ import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 interface YuGiOhDao {
     @Query("SELECT * FROM yugioh_cards ORDER BY name")
     fun selectAll(): DataSource.Factory<Int, YuGiOhCard>
-
-    @Query("SELECT * FROM yugioh_cards ORDER BY name")
-    suspend fun selectAllTest(): List<YuGiOhCard>
 }

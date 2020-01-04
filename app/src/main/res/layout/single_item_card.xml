@@ -23,8 +23,10 @@
         <ImageView
             android:id="@+id/iv_single_yugioh_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="70"
+            android:maxWidth="280dp"
+            android:maxHeight="410dp"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 

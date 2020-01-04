@@ -6,16 +6,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.YourMoveApplication
-import com.coroutinedispatcher.yourmove.utils.LOADING
-import com.coroutinedispatcher.yourmove.utils.OFFLINE
-import com.coroutinedispatcher.yourmove.utils.SYNCED
 import com.coroutinedispatcher.yourmove.utils.savedStateViewModel
 import com.google.android.material.textfield.TextInputEditText
 
@@ -42,9 +38,8 @@ class SearchFragment : Fragment(), CardAdapterContract {
         super.onViewCreated(view, savedInstanceState)
         initialiseComponents(view)
         afterInitialize()
-        searchViewModel.yuGiOhCards.observe(this, Observer {
+        searchViewModel.cards.observe(this, Observer {
             cardAdapter.submitList(it)
-//            cardAdapter.saveListState(it)
             etUserSearchInput?.isEnabled = true
         })
     }
@@ -65,7 +60,6 @@ class SearchFragment : Fragment(), CardAdapterContract {
             }
 
             override fun onTextChanged(input: CharSequence?, start: Int, before: Int, count: Int) {
-                cardAdapter.filter.filter(input.toString())
             }
         })
     }
@@ -78,7 +72,6 @@ class SearchFragment : Fragment(), CardAdapterContract {
     }
 
     override fun scrollToTop() {
-        cardRecyclerView?.scrollToPosition(0)
     }
 
     override fun onCardClick(cardId: String) {
