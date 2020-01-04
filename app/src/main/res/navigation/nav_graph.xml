@@ -9,12 +9,12 @@
         android:id="@+id/searchFragment"
         android:name="com.coroutinedispatcher.yourmove.ui.search.SearchFragment"
         android:label="search_fragment"
-        tools:layout="@layout/search_fragment" >
+        tools:layout="@layout/search_fragment">
         <action
             android:id="@+id/action_searchFragment_to_cardDetailsFragment"
             app:destination="@id/cardDetailsFragment" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/advancedSearchFragment"
         android:name="com.coroutinedispatcher.yourmove.ui.advanced_search.AdvancedSearchFragment"
         android:label="fragment_advanced_search"
@@ -23,10 +23,10 @@
         android:id="@+id/cardDetailsFragment"
         android:name="com.coroutinedispatcher.yourmove.ui.card_details.CardDetailsFragment"
         android:label="fragment_card_details"
-        tools:layout="@layout/fragment_card_details" >
+        tools:layout="@layout/fragment_card_details">
         <argument
             android:name="cardId"
-            app:argType="string"
-            android:defaultValue="'&quot;" />
+            android:defaultValue="'&quot;"
+            app:argType="string" />
     </fragment>
 </navigation>

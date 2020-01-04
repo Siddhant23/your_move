@@ -1,8 +1,6 @@
 package com.coroutinedispatcher.yourmove.ui.search
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.YourMoveApplication
 import com.coroutinedispatcher.yourmove.utils.savedStateViewModel
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class SearchFragment : Fragment(), CardAdapterContract {
 
     private var cardRecyclerView: RecyclerView? = null
-    private var etUserSearchInput: TextInputEditText? = null
+    private var fabSearch: FloatingActionButton? = null
     private val searchViewModel: SearchViewModel by savedStateViewModel {
         YourMoveApplication.getYourMoveComponent().searchViewModelFactory.create(it)
     }
@@ -40,34 +38,25 @@ class SearchFragment : Fragment(), CardAdapterContract {
         afterInitialize()
         searchViewModel.cards.observe(this, Observer {
             cardAdapter.submitList(it)
-            etUserSearchInput?.isEnabled = true
         })
     }
 
     private fun initialiseComponents(view: View) {
-        etUserSearchInput = view.findViewById(R.id.et_user_search_input)
         cardRecyclerView = view.findViewById(R.id.rv_yugioh_cards)
+        fabSearch = view.findViewById(R.id.fab_search)
         cardRecyclerView?.adapter = cardAdapter
-        etUserSearchInput?.isEnabled = false
     }
 
     private fun afterInitialize() {
-        etUserSearchInput?.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(input: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(input: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
+        fabSearch?.setOnClickListener {
+            findNavController().navigate(R.id.advancedSearchFragment)
+        }
     }
 
     override fun onDestroyView() {
         cardRecyclerView?.adapter = null
         cardRecyclerView = null
-        etUserSearchInput = null
+        fabSearch = null
         super.onDestroyView()
     }
 

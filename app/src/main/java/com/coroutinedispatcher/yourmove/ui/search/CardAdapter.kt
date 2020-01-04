@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 import com.coroutinedispatcher.yourmove.utils.DIFF_UTIL_CARDS
-import com.coroutinedispatcher.yourmove.utils.IMAGE_URL_NORMAL
+import com.coroutinedispatcher.yourmove.utils.IMAGE_URL_SMALL
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
@@ -21,7 +21,6 @@ class CardAdapter @Inject constructor(
     private val cardAdapterContract: CardAdapterContract
 ) :
     PagedListAdapter<YuGiOhCard, CardAdapter.CardViewHolder>(DIFF_UTIL_CARDS) {
-    private lateinit var fullListOfData: MutableList<YuGiOhCard>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder =
         CardViewHolder(
@@ -50,8 +49,7 @@ class CardAdapter @Inject constructor(
                 val cardViewHolder = findViewById<MaterialCardView>(R.id.cv_holder)
                 tvCardName.text = item?.name
                 tvCardType.text = "${item?.type}, ${item?.race}"
-                picasso.load("${IMAGE_URL_NORMAL}${item?.id}.jpg")
-                    .resize(280, 410)
+                picasso.load("${IMAGE_URL_SMALL}${item?.id}.jpg")
                     .placeholder(R.drawable.yugioh_facedown_card)
                     .error(R.drawable.yugioh_facedown_card)
                     .into(ivYuGiOhImage)

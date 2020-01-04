@@ -24,4 +24,7 @@
     <string name="user_status">You are offline</string>
     <string name="you_are_offline">You are offline</string>
     <string name="loading">Syncing...</string>
+    <string name="level">Level</string>
+    <string name="def_points">def</string>
+    <string name="attack_points">atk</string>
 </resources>
