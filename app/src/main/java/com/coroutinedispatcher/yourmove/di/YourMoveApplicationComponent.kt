@@ -3,6 +3,7 @@ package com.coroutinedispatcher.yourmove.di
 import android.app.Application
 import com.coroutinedispatcher.yourmove.db.YuGiOhDao
 import com.coroutinedispatcher.yourmove.model.AppCoroutineDispatchers
+import com.coroutinedispatcher.yourmove.ui.advanced_search.AdvancedSearchViewModel
 import com.coroutinedispatcher.yourmove.ui.search.SearchViewModel
 import com.squareup.picasso.Picasso
 import com.stavro_xhardha.rocket.Rocket
@@ -23,4 +24,5 @@ interface YourMoveApplicationComponent {
     val searchViewModelFactory: SearchViewModel.Factory
     val appCoroutineDispatchers: AppCoroutineDispatchers
     val yuGiOhDao: YuGiOhDao
+    val advancedSearchViewModelFactory: AdvancedSearchViewModel.Factory
 }
