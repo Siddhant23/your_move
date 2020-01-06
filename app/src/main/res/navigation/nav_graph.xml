@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.coroutinedispatcher.yourmove.ui.search.SearchFragment"
+        android:name="com.coroutinedispatcher.yourmove.ui.search.HomeFragment"
         android:label="search_fragment"
-        tools:layout="@layout/search_fragment">
+        tools:layout="@layout/home_fragment">
         <action
             android:id="@+id/action_searchFragment_to_cardDetailsFragment"
             app:destination="@id/cardDetailsFragment" />

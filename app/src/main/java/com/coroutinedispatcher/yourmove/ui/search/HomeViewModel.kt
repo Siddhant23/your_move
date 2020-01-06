@@ -7,23 +7,22 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.coroutinedispatcher.yourmove.db.YuGiOhDao
 import com.coroutinedispatcher.yourmove.model.AppCoroutineDispatchers
+import com.coroutinedispatcher.yourmove.model.SearchObject
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 
 
-class SearchViewModel @AssistedInject constructor(
+class HomeViewModel @AssistedInject constructor(
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
     private val yugiohdao: YuGiOhDao,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
     var cards: LiveData<PagedList<YuGiOhCard>>
-
-
+    
     @AssistedInject.Factory
     interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): SearchViewModel
+        fun create(savedStateHandle: SavedStateHandle): HomeViewModel
     }
 
     init {
@@ -33,5 +32,9 @@ class SearchViewModel @AssistedInject constructor(
             .build()
         val dataSourceFactory = yugiohdao.selectAll()
         cards = LivePagedListBuilder(dataSourceFactory, listConfig).build()
+    }
+
+    fun performSearch(searchObject: SearchObject) {
+
     }
 }

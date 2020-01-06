@@ -4,7 +4,7 @@ import android.app.Application
 import com.coroutinedispatcher.yourmove.db.YuGiOhDao
 import com.coroutinedispatcher.yourmove.model.AppCoroutineDispatchers
 import com.coroutinedispatcher.yourmove.ui.advanced_search.AdvancedSearchViewModel
-import com.coroutinedispatcher.yourmove.ui.search.SearchViewModel
+import com.coroutinedispatcher.yourmove.ui.search.HomeViewModel
 import com.squareup.picasso.Picasso
 import com.stavro_xhardha.rocket.Rocket
 import dagger.BindsInstance
@@ -21,7 +21,7 @@ interface YourMoveApplicationComponent {
 
     val picasso: Picasso
     val rocket: Rocket
-    val searchViewModelFactory: SearchViewModel.Factory
+    val homeViewModelFactory: HomeViewModel.Factory
     val appCoroutineDispatchers: AppCoroutineDispatchers
     val yuGiOhDao: YuGiOhDao
     val advancedSearchViewModel: AdvancedSearchViewModel

@@ -5,38 +5,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.coroutinedispatcher.yourmove.R
+import com.coroutinedispatcher.yourmove.SharedViewModel
 import com.coroutinedispatcher.yourmove.YourMoveApplication
 import com.coroutinedispatcher.yourmove.utils.savedStateViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class SearchFragment : Fragment(), CardAdapterContract {
+class HomeFragment : Fragment(), CardAdapterContract {
 
     private var cardRecyclerView: RecyclerView? = null
     private var fabSearch: FloatingActionButton? = null
-    private val searchViewModel: SearchViewModel by savedStateViewModel {
-        YourMoveApplication.getYourMoveComponent().searchViewModelFactory.create(it)
+    private val homeViewModel: HomeViewModel by savedStateViewModel {
+        YourMoveApplication.getYourMoveComponent().homeViewModelFactory.create(it)
     }
     private val cardAdapter: CardAdapter by lazy {
         val picasso = YourMoveApplication.getYourMoveComponent().picasso
         CardAdapter(picasso, this)
     }
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.search_fragment, container, false)
+        return inflater.inflate(R.layout.home_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initialiseComponents(view)
         afterInitialize()
-        searchViewModel.cards.observe(this, Observer {
+        homeViewModel.cards.observe(this, Observer {
             cardAdapter.submitList(it)
         })
     }
@@ -51,6 +54,11 @@ class SearchFragment : Fragment(), CardAdapterContract {
         fabSearch?.setOnClickListener {
             findNavController().navigate(R.id.advancedSearchFragment)
         }
+        sharedViewModel.searchObjectLiveData.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {searchObject ->
+                homeViewModel.performSearch(searchObject)
+            }
+        })
     }
 
     override fun onDestroyView() {

@@ -6,13 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.coroutinedispatcher.yourmove.R
+import com.coroutinedispatcher.yourmove.SharedViewModel
 import com.coroutinedispatcher.yourmove.YourMoveApplication
 import com.coroutinedispatcher.yourmove.utils.viewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-
 
 class AdvancedSearchFragment : BottomSheetDialogFragment() {
     private var levelSpinner: Spinner? = null
@@ -21,6 +23,8 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
     private var defTextInputEditText: TextInputEditText? = null
     private var atkTextInputEditText: TextInputEditText? = null
     private var nameTextInputEditText: TextInputEditText? = null
+    private var searchButton: MaterialButton? = null
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     private val advancedSearchViewModel by viewModel {
         YourMoveApplication.getYourMoveComponent().advancedSearchViewModel
@@ -70,7 +74,38 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
             }
         })
 
-        levelSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        advancedSearchViewModel.cardObjectEvent.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandled()?.let { searchObject ->
+                sharedViewModel.pushSearchObject(searchObject)
+            }
+        })
+
+        levelSpinner?.onItemSelectedListener = handleItemSelection("Level") {
+            advancedSearchViewModel.setLevel(it)
+        }
+
+        typeSpinner?.onItemSelectedListener = handleItemSelection("Type") {
+            advancedSearchViewModel.setType(it)
+        }
+
+        raceSpinner?.onItemSelectedListener = handleItemSelection("Race") {
+            advancedSearchViewModel.setRace(it)
+        }
+
+        searchButton?.setOnClickListener {
+            advancedSearchViewModel.instantiateSearch(
+                atkTextInputEditText?.text.toString(),
+                defTextInputEditText?.text.toString(),
+                nameTextInputEditText.toString()
+            )
+        }
+    }
+
+    private inline fun handleItemSelection(
+        forbidenChosenFiled: String,
+        crossinline methodExecutor: (String) -> Unit
+    ): AdapterView.OnItemSelectedListener {
+        return object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
@@ -81,8 +116,8 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
                 id: Long
             ) {
                 val chosenField = parent?.getItemAtPosition(position).toString()
-                if (chosenField != "Level") {
-
+                if (chosenField != forbidenChosenFiled) {
+                    methodExecutor(chosenField)
                 }
             }
         }
@@ -124,6 +159,7 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
         defTextInputEditText = null
         atkTextInputEditText = null
         nameTextInputEditText = null
+        searchButton = null
         super.onDestroyView()
     }
 }
