@@ -9,7 +9,7 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.YourMoveApplication
-import com.coroutinedispatcher.yourmove.utils.savedStateViewModel
+import com.coroutinedispatcher.yourmove.utils.viewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 
@@ -22,8 +22,8 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
     private var atkTextInputEditText: TextInputEditText? = null
     private var nameTextInputEditText: TextInputEditText? = null
 
-    private val advancedSearchViewModel by savedStateViewModel<AdvancedSearchViewModel> {
-        YourMoveApplication.getYourMoveComponent().advancedSearchViewModelFactory.create(it)
+    private val advancedSearchViewModel by viewModel {
+        YourMoveApplication.getYourMoveComponent().advancedSearchViewModel
     }
 
     override fun onCreateView(
@@ -80,7 +80,10 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
                 position: Int,
                 id: Long
             ) {
+                val chosenField = parent?.getItemAtPosition(position).toString()
+                if (chosenField != "Level") {
 
+                }
             }
         }
     }
@@ -101,12 +104,13 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
                     convertView: View?,
                     parent: ViewGroup
                 ): View {
-                    val view = super.getDropDownView(position, convertView, parent)
-                    val textView: TextView = view as TextView
+                    val textView = super.getDropDownView(position, convertView, parent) as TextView
                     if (position == 0) {
                         textView.setTextColor(Color.GRAY)
+                    } else {
+                        textView.setTextColor(Color.WHITE)
                     }
-                    return view
+                    return textView
                 }
             }
         }

@@ -24,5 +24,5 @@ interface YourMoveApplicationComponent {
     val searchViewModelFactory: SearchViewModel.Factory
     val appCoroutineDispatchers: AppCoroutineDispatchers
     val yuGiOhDao: YuGiOhDao
-    val advancedSearchViewModelFactory: AdvancedSearchViewModel.Factory
+    val advancedSearchViewModel: AdvancedSearchViewModel
 }

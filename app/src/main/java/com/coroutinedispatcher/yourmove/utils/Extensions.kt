@@ -23,6 +23,14 @@ inline fun <reified T : ViewModel> Fragment.savedStateViewModel(
     }
 }
 
+inline fun <reified T : ViewModel> Fragment.viewModel(
+    crossinline provider: () -> T
+) = viewModels<T> {
+    object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T = provider() as T
+    }
+}
+
 val DIFF_UTIL_CARDS = object : DiffUtil.ItemCallback<YuGiOhCard>() {
     override fun areItemsTheSame(oldItem: YuGiOhCard, newItem: YuGiOhCard): Boolean =
         oldItem.id == newItem.id

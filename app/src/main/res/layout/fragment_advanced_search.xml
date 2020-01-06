@@ -109,7 +109,7 @@
             app:layout_constraintTop_toBottomOf="@+id/sp_race" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button"
+            android:id="@+id/btn_search"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
