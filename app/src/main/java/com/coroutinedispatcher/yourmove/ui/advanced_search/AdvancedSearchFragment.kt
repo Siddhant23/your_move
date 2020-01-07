@@ -50,6 +50,7 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
         defTextInputEditText = view.findViewById(R.id.et_def)
         atkTextInputEditText = view.findViewById(R.id.et_atk)
         nameTextInputEditText = view.findViewById(R.id.et_name)
+        searchButton = view.findViewById(R.id.btn_search)
     }
 
     private fun afterInitialize() {
@@ -96,7 +97,7 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
             advancedSearchViewModel.instantiateSearch(
                 atkTextInputEditText?.text.toString(),
                 defTextInputEditText?.text.toString(),
-                nameTextInputEditText.toString()
+                nameTextInputEditText?.text.toString()
             )
         }
     }

@@ -65,7 +65,7 @@ class AdvancedSearchViewModel @Inject constructor(
         viewModelScope.launch(appCoroutineDispatchers.ioDispatchers) {
             this@AdvancedSearchViewModel.atkPoints = attack.toIntOrNull()
             this@AdvancedSearchViewModel.deffPoints = defence.toIntOrNull()
-            this@AdvancedSearchViewModel.cardName = if (name.isEmpty()) null else cardName
+            this@AdvancedSearchViewModel.cardName = if (name.isEmpty()) null else name
             _cardObjectEvent.postValue(
                 Event(
                     SearchObject(

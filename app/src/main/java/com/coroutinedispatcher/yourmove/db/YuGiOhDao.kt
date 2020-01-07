@@ -3,6 +3,8 @@ package com.coroutinedispatcher.yourmove.db
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 
 @Dao
@@ -15,4 +17,7 @@ interface YuGiOhDao {
 
     @Query("SELECT DISTINCT race FROM yugioh_cards")
     fun selectAllRaces(): List<String>
+
+    @RawQuery(observedEntities = [YuGiOhCard::class])
+    fun selectAllMeetingCondition(query: SupportSQLiteQuery): DataSource.Factory<Int, YuGiOhCard>
 }

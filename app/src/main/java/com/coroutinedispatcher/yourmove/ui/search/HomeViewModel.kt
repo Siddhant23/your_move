@@ -11,6 +11,7 @@ import com.coroutinedispatcher.yourmove.model.SearchObject
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import timber.log.Timber
 
 
 class HomeViewModel @AssistedInject constructor(
@@ -19,7 +20,7 @@ class HomeViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     var cards: LiveData<PagedList<YuGiOhCard>>
-    
+
     @AssistedInject.Factory
     interface Factory {
         fun create(savedStateHandle: SavedStateHandle): HomeViewModel

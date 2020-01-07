@@ -72,7 +72,7 @@ class HomeFragment : Fragment(), CardAdapterContract {
     }
 
     override fun onCardClick(cardId: String) {
-        val action = SearchFragmentDirections.actionSearchFragmentToCardDetailsFragment(cardId)
+        val action = HomeFragmentDirections.actionSearchFragmentToCardDetailsFragment(cardId)
         findNavController().navigate(action)
     }
 }
