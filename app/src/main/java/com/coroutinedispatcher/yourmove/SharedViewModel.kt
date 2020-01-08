@@ -7,10 +7,10 @@ import com.coroutinedispatcher.yourmove.model.SearchObject
 import com.coroutinedispatcher.yourmove.utils.Event
 
 class SharedViewModel : ViewModel() {
-    private val _searchObjectLiveData = MutableLiveData<Event<SearchObject>>()
-    val searchObjectLiveData: LiveData<Event<SearchObject>> = _searchObjectLiveData
+    private val _searchObjectLiveData = MutableLiveData<Event<String>>()
+    val searchObjectLiveData: LiveData<Event<String>> = _searchObjectLiveData
 
-    fun pushSearchObject(searchObject: SearchObject) {
+    fun pushSearchObject(searchObject: String) {
         _searchObjectLiveData.value = Event(searchObject)
     }
 }

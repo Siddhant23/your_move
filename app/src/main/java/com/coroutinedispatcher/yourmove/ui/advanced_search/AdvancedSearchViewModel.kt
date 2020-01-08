@@ -3,7 +3,6 @@ package com.coroutinedispatcher.yourmove.ui.advanced_search
 import androidx.lifecycle.*
 import com.coroutinedispatcher.yourmove.db.YuGiOhDao
 import com.coroutinedispatcher.yourmove.model.AppCoroutineDispatchers
-import com.coroutinedispatcher.yourmove.model.SearchObject
 import com.coroutinedispatcher.yourmove.utils.Event
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,8 +19,8 @@ class AdvancedSearchViewModel @Inject constructor(
     private var atkPoints: Int? = null
     private var deffPoints: Int? = null
     private var cardName: String? = null
-    private val _cardObjectEvent = MutableLiveData<Event<SearchObject>>()
-    val cardObjectEvent: LiveData<Event<SearchObject>> = _cardObjectEvent
+    private val _cardObjectEvent = MutableLiveData<Event<String>>()
+    val cardObjectEvent: LiveData<Event<String>> = _cardObjectEvent
 
     val levelData: LiveData<List<String>> = liveData {
         emit(listOf("Level", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"))
@@ -66,18 +65,27 @@ class AdvancedSearchViewModel @Inject constructor(
             this@AdvancedSearchViewModel.atkPoints = attack.toIntOrNull()
             this@AdvancedSearchViewModel.deffPoints = defence.toIntOrNull()
             this@AdvancedSearchViewModel.cardName = if (name.isEmpty()) null else name
-            _cardObjectEvent.postValue(
-                Event(
-                    SearchObject(
-                        name = this@AdvancedSearchViewModel.cardName,
-                        atk = this@AdvancedSearchViewModel.atkPoints,
-                        def = this@AdvancedSearchViewModel.deffPoints,
-                        type = this@AdvancedSearchViewModel.type,
-                        race = this@AdvancedSearchViewModel.race,
-                        level = this@AdvancedSearchViewModel.level
-                    )
-                )
-            )
+            var selectionQuery = "SELECT * FROM yugioh_cards "
+            this@AdvancedSearchViewModel.cardName?.let {
+                selectionQuery += "AND name LIKE '%$it%' "
+            }
+            this@AdvancedSearchViewModel.atkPoints?.let {
+                selectionQuery += "AND atk = $it "
+            }
+            this@AdvancedSearchViewModel.deffPoints?.let {
+                selectionQuery += "AND def = $it "
+            }
+            this@AdvancedSearchViewModel.level?.let {
+                selectionQuery += "AND level = $it "
+            }
+            this@AdvancedSearchViewModel.type?.let {
+                selectionQuery += "AND type = '$it' "
+            }
+            this@AdvancedSearchViewModel.race?.let {
+                selectionQuery += "AND race = '$it' "
+            }
+            val finalSelectionQuery = selectionQuery.replaceFirst("AND", "WHERE")
+            _cardObjectEvent.postValue(Event(finalSelectionQuery))
         }
     }
 }

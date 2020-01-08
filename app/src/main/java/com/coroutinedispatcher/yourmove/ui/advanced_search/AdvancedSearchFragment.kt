@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.coroutinedispatcher.yourmove.R
 import com.coroutinedispatcher.yourmove.SharedViewModel
 import com.coroutinedispatcher.yourmove.YourMoveApplication
@@ -78,6 +79,7 @@ class AdvancedSearchFragment : BottomSheetDialogFragment() {
         advancedSearchViewModel.cardObjectEvent.observe(viewLifecycleOwner, Observer { event ->
             event.getContentIfNotHandled()?.let { searchObject ->
                 sharedViewModel.pushSearchObject(searchObject)
+                findNavController().popBackStack()
             }
         })
 

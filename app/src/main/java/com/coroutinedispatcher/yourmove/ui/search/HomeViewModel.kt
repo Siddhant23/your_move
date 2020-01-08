@@ -1,17 +1,17 @@
 package com.coroutinedispatcher.yourmove.ui.search
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.coroutinedispatcher.yourmove.db.YuGiOhDao
 import com.coroutinedispatcher.yourmove.model.AppCoroutineDispatchers
-import com.coroutinedispatcher.yourmove.model.SearchObject
 import com.coroutinedispatcher.yourmove.model.YuGiOhCard
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import timber.log.Timber
 
 
 class HomeViewModel @AssistedInject constructor(
@@ -21,21 +21,34 @@ class HomeViewModel @AssistedInject constructor(
 ) : ViewModel() {
     var cards: LiveData<PagedList<YuGiOhCard>>
 
+    private val listConfig = PagedList.Config.Builder()
+        .setPageSize(20)
+        .setEnablePlaceholders(false)
+        .build()
+
+    private var finalSelectionQuery = ""
+
     @AssistedInject.Factory
     interface Factory {
         fun create(savedStateHandle: SavedStateHandle): HomeViewModel
     }
 
     init {
-        val listConfig = PagedList.Config.Builder()
-            .setPageSize(20)
-            .setEnablePlaceholders(false)
-            .build()
-        val dataSourceFactory = yugiohdao.selectAll()
-        cards = LivePagedListBuilder(dataSourceFactory, listConfig).build()
+        cards = LivePagedListBuilder(
+            yugiohdao.selectAllMeetingCondition(
+                SimpleSQLiteQuery("SELECT * FROM yugioh_cards $finalSelectionQuery ORDER BY name")
+            ),
+            listConfig
+        ).build()
     }
 
-    fun performSearch(searchObject: SearchObject) {
-
+    fun performSearch(query: String, lifecycleOwner: LifecycleOwner) {
+        cards.removeObservers(lifecycleOwner)
+        cards = LivePagedListBuilder(
+            yugiohdao.selectAllMeetingCondition(
+                SimpleSQLiteQuery(query)
+            ),
+            listConfig
+        ).build()
     }
 }

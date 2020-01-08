@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -39,9 +40,7 @@ class HomeFragment : Fragment(), CardAdapterContract {
         super.onViewCreated(view, savedInstanceState)
         initialiseComponents(view)
         afterInitialize()
-        homeViewModel.cards.observe(this, Observer {
-            cardAdapter.submitList(it)
-        })
+        observeDataChanges()
     }
 
     private fun initialiseComponents(view: View) {
@@ -54,9 +53,21 @@ class HomeFragment : Fragment(), CardAdapterContract {
         fabSearch?.setOnClickListener {
             findNavController().navigate(R.id.advancedSearchFragment)
         }
-        sharedViewModel.searchObjectLiveData.observe(this, Observer {
-            it.getContentIfNotHandled()?.let {searchObject ->
-                homeViewModel.performSearch(searchObject)
+        sharedViewModel.searchObjectLiveData.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let { searchObject ->
+                homeViewModel.performSearch(searchObject, this)
+                observeDataChanges()
+            }
+        })
+    }
+
+    private fun observeDataChanges() {
+        homeViewModel.cards.observe(this, Observer {
+            if (it.isEmpty()) {
+                Toast.makeText(requireActivity(), R.string.no_data_found, Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                cardAdapter.submitList(it)
             }
         })
     }
